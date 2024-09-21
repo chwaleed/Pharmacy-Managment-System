@@ -1,22 +1,44 @@
+import { useNavigate } from "react-router-dom";
+
 function Navbar() {
+  const navigate = useNavigate();
   const navList = [
-    "Dashboard",
-    "Add Medicine",
-    "Add Supplier",
-    "Sales",
-    "Customers",
-    "Reports",
+    {
+      text: "Dashboard",
+      link: "dashboard",
+    },
+    {
+      text: "Add Medicine",
+      link: "add-medicine",
+    },
+    {
+      text: "Add Supplier",
+      link: "add-supplier",
+    },
+    {
+      text: "Sales",
+      link: "sales",
+    },
+    {
+      text: "Customers",
+      link: "customers",
+    },
+    {
+      text: "Reports",
+      link: "reports",
+    },
   ];
   return (
-    <nav className="bg-[#2F4252] flex justify-center items-center flex-col gap-10 h-screen w-[17%]">
+    <nav className="bg-[#2F4252] flex justify-center items-center flex-col gap-10 h-screen min-w-[17%]">
       <div className="text-white font-bold text-[3rem]">LOGO</div>
       <ol className="flex flex-col gap-5  w-full">
         {navList.map((item, index) => (
           <li
+            onClick={() => navigate(`/${navList[index].link}`)}
             className="text-center text-[#D3D3D3] hover:cursor-pointer  focus:text-white text-[1.5rem] font-semibold py-5"
             key={`nav-${index}`}
           >
-            {item}
+            {navList[index].text}
           </li>
         ))}
       </ol>
