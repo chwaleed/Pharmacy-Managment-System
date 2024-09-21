@@ -1,5 +1,11 @@
+import Navbar from "@/components/navbar";
+
 function Dashboard() {
-  return <div className="bg-[#2F4252] h-screen w-[17%]"></div>;
+  return (
+    <div>
+      <Navbar />
+    </div>
+  );
 }
 
 export default Dashboard;
