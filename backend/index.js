@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import express from "express";
+import routes from "./routes/routes.js";
 
 dotenv.config();
 const databaseUrl = process.env.DATABASE_URL;
@@ -17,6 +18,8 @@ mongoose
   });
 
 app.use(express.json());
+
+app.use("/api", routes);
 
 const server = app.listen(port, () => {
   console.log(`Server is listining at Port ${port}`);

@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 
 const dailySalesSchema = new mongoose.Schema(
   {
-    _id: mongoose.Schema.Types.ObjectId,
     date: { type: Date, required: true },
     total_sales: { type: Number, required: true },
     total_profit: { type: Number, required: true },
