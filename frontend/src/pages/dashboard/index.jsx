@@ -1,46 +1,49 @@
+import { BriefcaseBusiness, ChartColumn } from "lucide-react";
+import { ChartNoAxesCombined } from "lucide-react";
+
 function Dashboard() {
   const boxes = [
     {
       primaryText: "Medicines",
       secondaryText: "Report",
       value: 5,
-      icon: "icon",
-      colorCode: "#32BC8B",
+      icon: <BriefcaseBusiness size={33} strokeWidth={3} />,
+      colorCode: "bg-[#32BC8B]",
     },
     {
       primaryText: "Sales Of Day",
       secondaryText: "Report",
       value: 5,
-      icon: "icon",
-      colorCode: "#337CBB",
+      icon: <ChartColumn size={33} strokeWidth={3} />,
+      colorCode: "bg-[#337CBB]",
     },
     {
       primaryText: "Sales Of Month",
       secondaryText: "Report",
       value: 5,
-      icon: "icon",
-      colorCode: "#94E264",
+      icon: <ChartNoAxesCombined size={33} strokeWidth={3} />,
+      colorCode: "bg-[#94E264]",
     },
     {
       primaryText: "Stock Shortage",
       secondaryText: "Report",
       value: 5,
       icon: "icon",
-      colorCode: "#E89772",
+      colorCode: "bg-[#E89772]",
     },
     {
       primaryText: "Expired Products",
       secondaryText: "Report",
       value: 5,
       icon: "icon",
-      colorCode: "#A97BAA",
+      colorCode: "bg-[#A97BAA]",
     },
     {
       primaryText: "Near Expiry",
       secondaryText: "Report",
-      value: 500,
+      value: 5,
       icon: "icon",
-      colorCode: "#42DAD2",
+      colorCode: "bg-[#42DAD2]",
     },
   ];
 
@@ -49,16 +52,14 @@ function Dashboard() {
       {boxes.map((item, index) => (
         <div
           key={`boxes-${index}`}
-          className={`bg-[${boxes[index].colorCode}] px-5 gap-4 h-[9rem] flex flex-col justify-center w-[24rem]`}
+          className={`${item.colorCode} px-5 gap-4 h-[9rem] flex flex-col justify-center w-[24rem]`}
         >
           <h1 className="text-[1.6rem]  font-semibold flex justify-between">
-            {boxes[index].primaryText} <span>{boxes[index].icon}</span>
+            {item.primaryText} <span>{item.icon}</span>
           </h1>
-          <h1 className="  font-semibold flex justify-between">
-            {boxes[index].secondaryText}{" "}
-            <span className="text-[1.6rem] font-bold">
-              {boxes[index].value}
-            </span>
+          <h1 className="font-semibold flex justify-between">
+            {item.secondaryText}{" "}
+            <span className="text-[1.6rem] font-bold">{item.value}</span>
           </h1>
         </div>
       ))}
