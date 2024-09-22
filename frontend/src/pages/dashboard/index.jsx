@@ -1,5 +1,11 @@
-import { BriefcaseBusiness, ChartColumn } from "lucide-react";
-import { ChartNoAxesCombined } from "lucide-react";
+import {
+  Ban,
+  BellOff,
+  BriefcaseBusiness,
+  ChartColumn,
+  Zap,
+  ChartNoAxesCombined,
+} from "lucide-react";
 
 function Dashboard() {
   const boxes = [
@@ -28,21 +34,21 @@ function Dashboard() {
       primaryText: "Stock Shortage",
       secondaryText: "Report",
       value: 5,
-      icon: "icon",
+      icon: <BellOff strokeWidth={3} size={33} />,
       colorCode: "bg-[#E89772]",
     },
     {
       primaryText: "Expired Products",
       secondaryText: "Report",
       value: 5,
-      icon: "icon",
+      icon: <Ban strokeWidth={3} size={33} />,
       colorCode: "bg-[#A97BAA]",
     },
     {
       primaryText: "Near Expiry",
       secondaryText: "Report",
       value: 5,
-      icon: "icon",
+      icon: <Zap strokeWidth={3} size={33} />,
       colorCode: "bg-[#42DAD2]",
     },
   ];
