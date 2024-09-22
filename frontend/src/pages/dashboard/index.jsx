@@ -38,7 +38,7 @@ function Dashboard() {
     {
       primaryText: "Near Expiry",
       secondaryText: "Report",
-      value: 5,
+      value: 500,
       icon: "icon",
       colorCode: "#42DAD2",
     },
@@ -46,54 +46,22 @@ function Dashboard() {
 
   return (
     <div className="grid grid-cols-3 text-white  w-full pl-[5%]  content-start pt-[10%] gap-12">
-      <div className="bg-[#32BC8B]  h-[9rem] flex flex-col justify-center w-[22rem]">
-        <h1 className="text-[1.2rem] font-semibold flex justify-between">
-          TEXT <span>Icon</span>
-        </h1>
-        <h1>
-          Secondary Text <span>Value</span>
-        </h1>
-      </div>
-      <div className="bg-[#337CBB] h-[9rem] flex flex-col justify-center w-[22rem]">
-        <h1 className="text-[1.6rem]  font-semibold flex justify-between">
-          Sales Of Day <span>Icon</span>
-        </h1>
-        <h1>
-          Secondary Text <span>Value</span>
-        </h1>
-      </div>
-      <div className="bg-[#94E264] h-[9rem] flex flex-col justify-center w-[22rem]">
-        <h1 className="text-[1.2rem] font-semibold flex justify-between">
-          TEXT <span>Icon</span>
-        </h1>
-        <h1>
-          Secondary Text <span>Value</span>
-        </h1>
-      </div>
-      <div className="bg-[#E89772] h-[9rem] flex flex-col justify-center w-[22em]">
-        <h1 className="text-[1.2rem] font-semibold flex justify-between">
-          TEXT <span>Icon</span>
-        </h1>
-        <h1>
-          Secondary Text <span>Value</span>
-        </h1>
-      </div>
-      <div className="bg-[#A97BAA] h-[9rem] flex flex-col justify-center w-[22rem]">
-        <h1 className="text-[1.2rem] font-semibold flex justify-between">
-          TEXT <span>Icon</span>
-        </h1>
-        <h1>
-          Secondary Text <span>Value</span>
-        </h1>
-      </div>
-      <div className="bg-[#42DAD2] h-[9rem] flex flex-col justify-center w-[22rem]">
-        <h1 className="text-[1.2rem] font-semibold flex justify-between">
-          TEXT <span>Icon</span>
-        </h1>
-        <h1>
-          Secondary Text <span>Value</span>
-        </h1>
-      </div>
+      {boxes.map((item, index) => (
+        <div
+          key={`boxes-${index}`}
+          className={`bg-[${boxes[index].colorCode}] px-5 gap-4 h-[9rem] flex flex-col justify-center w-[24rem]`}
+        >
+          <h1 className="text-[1.6rem]  font-semibold flex justify-between">
+            {boxes[index].primaryText} <span>{boxes[index].icon}</span>
+          </h1>
+          <h1 className="  font-semibold flex justify-between">
+            {boxes[index].secondaryText}{" "}
+            <span className="text-[1.6rem] font-bold">
+              {boxes[index].value}
+            </span>
+          </h1>
+        </div>
+      ))}
     </div>
   );
 }
