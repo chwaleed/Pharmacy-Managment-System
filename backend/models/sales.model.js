@@ -13,7 +13,6 @@ const salesSchema = new mongoose.Schema(
         ref: "Product",
       },
     ],
-    sale_date: { type: Date, required: true },
     total_amount: { type: Number, required: true },
   },
   { timestamps: true }

@@ -4,6 +4,7 @@ import express from "express";
 
 dotenv.config();
 const databaseUrl = process.env.DATABASE_URL;
+const port = 4001;
 const app = express();
 
 // Database Connection
@@ -16,3 +17,7 @@ mongoose
   });
 
 app.use(express.json());
+
+const server = app.listen(port, () => {
+  console.log(`Server is listining at Port ${port}`);
+});
