@@ -3,7 +3,6 @@ import Supplier from "../models/supplier.model.js";
 export const createSupplier = async (request, response) => {
   try {
     const { name, phone_number, address } = request.body;
-    console.log(name);
     if (!name || !phone_number) {
       return response
         .status(400)
