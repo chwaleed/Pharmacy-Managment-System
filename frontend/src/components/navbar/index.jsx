@@ -8,11 +8,11 @@ function Navbar() {
       link: "dashboard",
     },
     {
-      text: "Add Medicine",
+      text: "Medicine",
       link: "add-medicine",
     },
     {
-      text: "Add Supplier",
+      text: "Supplier",
       link: "add-supplier",
     },
     {

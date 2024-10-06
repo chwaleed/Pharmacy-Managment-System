@@ -26,7 +26,7 @@ const invoices = [
   {
     invoice: "INV001",
     paymentStatus: "Paid",
-    totalAmount: "$250.00",
+    totalAmount: "$250",
     paymentMethod: "Credit Card",
   },
   {
@@ -133,7 +133,7 @@ function AddMedicine() {
           Search: <Input className="text-[1.1rem]" type="text" />
         </span>
       </div>
-      <TableCom data={invoices} head={head} />
+      <TableCom data={invoices} head={head} relation={"products"} />
       <div>
         <Pagination className="mt-5">
           <PaginationContent>
