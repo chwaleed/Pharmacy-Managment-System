@@ -7,7 +7,6 @@ import AddSupplier from "./pages/add-supplier";
 import Sales from "./pages/sales";
 import Reports from "./pages/reports";
 import Customers from "./pages/customers";
-
 function App() {
   return (
     <div className="flex">

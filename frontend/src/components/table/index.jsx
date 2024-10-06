@@ -10,6 +10,7 @@ import {
 import { Edit } from "lucide-react";
 import { X } from "lucide-react";
 import { Button } from "../ui/button";
+import AddProductDialog from "../Dialog/Dialog";
 function TableCom({ data, head, relation }) {
   /// Render row
   const renderRow = (item) => {
@@ -24,6 +25,7 @@ function TableCom({ data, head, relation }) {
         return null;
     }
   };
+
   return (
     <div className=" h-[39rem] mt-4 overflow-auto">
       <Table className="">
@@ -40,9 +42,10 @@ function TableCom({ data, head, relation }) {
             <TableRow key={index}>
               {renderRow(item)}
               <TableCell className="flex gap-2 justify-center">
-                <Button className="bg-blue-600 hover:bg-blue-700">
-                  <Edit />
-                </Button>
+                <AddProductDialog
+                  product={item}
+                  addButton={editMedicineButton}
+                />
                 <Button className="bg-red-600 hover:bg-red-700">
                   <X />
                 </Button>
@@ -56,7 +59,7 @@ function TableCom({ data, head, relation }) {
 }
 const renderInvoiceRow = (invoice) => (
   <>
-    <TableCell className="font-medium">{invoice.invoice}</TableCell>
+    <TableCell className="font-medium">{invoice.productName}</TableCell>
     <TableCell className="font-medium">{invoice.paymentStatus}</TableCell>
     <TableCell className="font-medium">{invoice.totalAmount}</TableCell>
     <TableCell className="font-medium">{invoice.totalAmoun || null}</TableCell>
@@ -82,3 +85,8 @@ const renderCustomer = (invoice) => (
 );
 
 export default TableCom;
+const editMedicineButton = (
+  <Button className="bg-blue-600 hover:bg-blue-700">
+    <Edit />
+  </Button>
+);

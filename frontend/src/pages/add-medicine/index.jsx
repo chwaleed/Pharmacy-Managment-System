@@ -21,14 +21,20 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import TableCom from "@/components/table";
-import AddProductDialog from "@/components/add-medicine-form/Dialog";
+import AddProductDialog from "@/components/Dialog/Dialog";
 
 const invoices = [
   {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250",
-    paymentMethod: "Credit Card",
+    productName: "Product 1",
+    genericName: "Generic 1",
+    type: "Type 1",
+    batchNumber: "Batch 1",
+    expiryDate: "Expiry 1",
+    company: "Company 1",
+    totalPrice: "Total 1",
+    costPrice: "Cost 1",
+    quantity: "Quantity 1",
+    supplier: "Supplier 1",
   },
   {
     invoice: "INV002",
@@ -114,7 +120,7 @@ function AddMedicine() {
     <div className="w-screen h-screen bg-[#F9F9FA]  px-[5%] pt-[5%]">
       <div className="w-full  flex justify-between">
         <h1 className="text-[2rem]">Medicine</h1>
-        <AddProductDialog />
+        <AddProductDialog addButton={AddMedicineButton} />
       </div>
       <div className="flex mt-5 justify-between">
         <select
@@ -156,3 +162,8 @@ function AddMedicine() {
 }
 
 export default AddMedicine;
+const AddMedicineButton = (
+  <Button className="bg-green-600 hover:bg-green-700 py-6 text-[1.1rem]">
+    <span className="text-[1.8rem] mb-1 mr-2 font-bold">+</span> Add New
+  </Button>
+);

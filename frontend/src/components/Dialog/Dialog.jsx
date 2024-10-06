@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -24,13 +25,35 @@ import {
 } from "@/components/ui/select";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { DialogClose } from "@radix-ui/react-dialog";
 
-function AddProductDialog() {
-  const form = useForm();
+function AddProductDialog({ product, addButton }) {
+  const form = useForm({
+    defaultValues: {
+      productName: product?.productName || "",
+      genericName: product?.genericName || "",
+      type: product?.type || "",
+      batchNumber: product?.batchNumber || "",
+      expiryDate: product?.expiryDate || "",
+      company: product?.company || "",
+      totalPrice: product?.totalPrice || "",
+      costPrice: product?.costPrice || "",
+      quantity: product?.quantity || "",
+      supplier: product?.supplier || "",
+    },
+  });
   const [activeFieldIndex, setActiveFieldIndex] = useState(0);
   const onSubmit = async (data) => {
-    console.log(data);
+    if (product) {
+      // Update existing product with data
+      console.log("Updating product:", data);
+    } else {
+      // Create new product with data
+      console.log("Creating product:", data);
+    }
   };
+  console.log(addButton);
+
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -44,11 +67,7 @@ function AddProductDialog() {
   };
   return (
     <Dialog className="w-[60vw]">
-      <DialogTrigger asChild>
-        <Button className="bg-green-600 hover:bg-green-700 py-6 text-[1.1rem]">
-          <span className="text-[1.8rem] mb-1 mr-2 font-bold">+</span> Add New
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{addButton}</DialogTrigger>
       <DialogContent className="p-8">
         <DialogHeader>
           <DialogTitle>Add Product</DialogTitle>
@@ -207,7 +226,7 @@ function AddProductDialog() {
                 name="quantity"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Quantity</FormLabel>  
+                    <FormLabel>Quantity</FormLabel>
                     <FormControl>
                       <Input placeholder="Quantity" type="number" {...field} />
                     </FormControl>
@@ -229,10 +248,12 @@ function AddProductDialog() {
                   </FormItem>
                 )}
               />
-            </div>{" "}
-            <div className="mt-6 flex justify-end">
-              <Button type="submit">Add Product</Button>
             </div>
+            <DialogClose asChild>
+              <div className="mt-6 flex justify-end">
+                <Button type="submit">Add Product</Button>
+              </div>
+            </DialogClose>
           </form>
         </Form>
       </DialogContent>
