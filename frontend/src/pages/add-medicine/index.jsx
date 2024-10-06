@@ -12,16 +12,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Edit } from "lucide-react";
-import { X } from "lucide-react";
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import TableCom from "@/components/table";
 
 const invoices = [
   {
@@ -66,6 +65,45 @@ const invoices = [
     totalAmount: "$300.00",
     paymentMethod: "Credit Card",
   },
+  {
+    invoice: "INV005",
+    paymentStatus: "Paid",
+    totalAmount: "$550.00",
+    paymentMethod: "PayPal",
+  },
+  {
+    invoice: "INV006",
+    paymentStatus: "Pending",
+    totalAmount: "$200.00",
+    paymentMethod: "Bank Transfer",
+  },
+  {
+    invoice: "INV007",
+    paymentStatus: "Unpaid",
+    totalAmount: "$300.00",
+    paymentMethod: "Credit Card",
+  },
+  {
+    invoice: "INV007",
+    paymentStatus: "Unpaid",
+    totalAmount: "$300.00",
+    paymentMethod: "Credit Card",
+  },
+  {
+    invoice: "INV007",
+    paymentStatus: "Unpaid",
+    totalAmount: "$300.00",
+    paymentMethod: "Credit Card",
+  },
+];
+
+const head = [
+  "Product Name",
+  "Batch No",
+  "Supplier",
+  "Company",
+  "Price",
+  "Quantity",
 ];
 
 function AddMedicine() {
@@ -74,7 +112,7 @@ function AddMedicine() {
   const onSubmit = async () => {};
 
   return (
-    <div className="w-screen bg-[#F9F9FA]  px-[5%] pt-[6%]">
+    <div className="w-screen h-screen bg-[#F9F9FA]  px-[5%] pt-[5%]">
       <div className="w-full  flex justify-between">
         <h1 className="text-[2rem]">Medicine</h1>
         <Button className="bg-green-600 hover:bg-green-700 py-6 text-[1.1rem]">
@@ -95,41 +133,26 @@ function AddMedicine() {
           Search: <Input className="text-[1.1rem]" type="text" />
         </span>
       </div>
+      <TableCom data={invoices} head={head} />
       <div>
-        <Table>
-          <TableCaption>A list of your recent invoices.</TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Product Name</TableHead>
-              <TableHead>Batch No</TableHead>
-              <TableHead>Supplier</TableHead>
-              <TableHead>Company</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead>Quantity</TableHead>
-              <TableHead>Action</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {invoices.map((item, index) => (
-              <TableRow key={index}>
-                <TableCell className="font-medium">INV001</TableCell>
-                <TableCell>Paid</TableCell>
-                <TableCell>Credit Card</TableCell>
-                <TableCell>Bloach Enterprise</TableCell>
-                <TableCell className="">$250.00</TableCell>
-                <TableCell>40</TableCell>
-                <TableCell className="flex gap-4">
-                  <span>
-                    <Edit />
-                  </span>
-                  <span>
-                    <X />
-                  </span>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <Pagination className="mt-5">
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious href="#" />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink href="#" isActive={true}>
+                1
+              </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationNext href="#" />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
     </div>
   );
