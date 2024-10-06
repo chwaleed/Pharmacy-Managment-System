@@ -21,6 +21,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import TableCom from "@/components/table";
+import AddProductDialog from "@/components/add-medicine-form/Dialog";
 
 const invoices = [
   {
@@ -107,17 +108,13 @@ const head = [
 ];
 
 function AddMedicine() {
-  const form = useForm();
-
   const onSubmit = async () => {};
 
   return (
     <div className="w-screen h-screen bg-[#F9F9FA]  px-[5%] pt-[5%]">
       <div className="w-full  flex justify-between">
         <h1 className="text-[2rem]">Medicine</h1>
-        <Button className="bg-green-600 hover:bg-green-700 py-6 text-[1.1rem]">
-          <span className="text-[1.8rem] mb-1 mr-2 font-bold">+</span> Add New
-        </Button>
+        <AddProductDialog />
       </div>
       <div className="flex mt-5 justify-between">
         <select
