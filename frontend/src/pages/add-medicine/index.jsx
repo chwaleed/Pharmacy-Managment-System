@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/pagination";
 import TableCom from "@/components/table";
 import AddProductDialog from "@/components/Dialog/Dialog";
+import { useEffect } from "react";
 
 const invoices = [
   {
