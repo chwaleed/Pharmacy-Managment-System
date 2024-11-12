@@ -74,3 +74,16 @@ export const getProduct = async (request, response) => {
     response.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+export const getAllProducts = async (req, res) => {
+  try {
+    const products = await Product.find();
+    if (!products) {
+      return res.status(404).json({ message: "No Product found." });
+    }
+    return res.status(200).json({ data: products });
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ error: "Internal Server Error" });
+  }
+};
