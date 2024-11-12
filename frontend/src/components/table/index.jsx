@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
 import {
   Table,
@@ -11,13 +12,15 @@ import { Edit } from "lucide-react";
 import { X } from "lucide-react";
 import { Button } from "../ui/button";
 import AddProductDialog from "../Dialog/Dialog";
+import SupplierDialog from "../Dialog/SupplierDialog";
+
 function TableCom({ data, head, relation }) {
   /// Render row
   const renderRow = (item) => {
     switch (relation) {
       case "products":
         return renderProductRow(item);
-      case "supplier":
+      case "suppliers":
         return renderSupplier(item);
       case "customer":
         return renderCustomer(item);
@@ -34,18 +37,32 @@ function TableCom({ data, head, relation }) {
             {head.map((item, index) => (
               <TableHead key={`table_head_${index}`}>{head[index]}</TableHead>
             ))}
-            <TableHead className="text-center">Action</TableHead>
+            <TableHead className="text-center ">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.map((item, index) => (
+          {data.map((data, index) => (
             <TableRow key={index}>
-              {renderRow(item)}
+              {renderRow(data)}
               <TableCell className="flex gap-2 justify-center">
-                <AddProductDialog
-                  product={item}
-                  addButton={editMedicineButton}
-                />
+                {(() => {
+                  if (relation === "products") {
+                    return (
+                      <AddProductDialog
+                        data={data}
+                        addButton={editMedicineButton}
+                      />
+                    );
+                  } else if (relation === "suppliers") {
+                    return (
+                      <SupplierDialog
+                        data={data}
+                        addButton={editMedicineButton}
+                      />
+                    );
+                  }
+                  return null;
+                })()}
                 <Button className="bg-red-600 hover:bg-red-700">
                   <X />
                 </Button>
@@ -67,12 +84,12 @@ const renderProductRow = (product) => (
     <TableCell className="font-medium">{product.quantity}</TableCell>
   </>
 );
-const renderSupplier = (invoice) => (
+
+const renderSupplier = (supplier) => (
   <>
-    <TableCell className="font-medium">Supplier</TableCell>
-    <TableCell className="font-medium">{invoice.paymentStatus}</TableCell>
-    <TableCell className="font-medium">{invoice.totalAmount}</TableCell>
-    <TableCell className="font-medium">{invoice.paymentMethod}</TableCell>
+    <TableCell className="font-medium">{supplier.name}</TableCell>
+    <TableCell className="font-medium">{supplier.phone_number}</TableCell>
+    <TableCell className="font-medium">{supplier.address}</TableCell>
   </>
 );
 const renderCustomer = (invoice) => (

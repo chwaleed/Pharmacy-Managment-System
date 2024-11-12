@@ -1,5 +1,8 @@
 import { Router } from "express";
-import { createSupplier } from "../controllers/supplierController.js";
+import {
+  createSupplier,
+  getSuppliers,
+} from "../controllers/supplierController.js";
 import {
   createProduct,
   getAllProducts,
@@ -8,10 +11,11 @@ import {
 
 const routes = Router();
 
-routes.post("/supplier", createSupplier);
+routes.post("/create-supplier", createSupplier);
 
-routes.post("/product", createProduct);
+routes.post("/create-product", createProduct);
 routes.get("/get-all-products", getAllProducts);
 routes.get("/get-product", getProduct);
+routes.get("/get-all-suppliers", getSuppliers);
 
 export default routes;

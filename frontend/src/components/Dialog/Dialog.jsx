@@ -26,30 +26,41 @@ import {
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { DialogClose } from "@radix-ui/react-dialog";
+import axios from "axios";
 
-function AddProductDialog({ product, addButton }) {
+function AddProductDialog({ data, addButton }) {
+  const createProductUrl = "http://localhost:4001/api/create-product";
   const form = useForm({
     defaultValues: {
-      productName: product?.productName || "",
-      genericName: product?.genericName || "",
-      type: product?.type || "",
-      batchNumber: product?.batchNumber || "",
-      expiryDate: product?.expiryDate || "",
-      company: product?.company || "",
-      totalPrice: product?.totalPrice || "",
-      costPrice: product?.costPrice || "",
-      quantity: product?.quantity || "",
-      supplier: product?.supplier || "",
+      name: data?.name || "",
+      generic_name: data?.generic_name || "",
+      type: data?.type || "",
+      batch_number: data?.batch_number || "",
+      expiry_date: data?.expiry_date || "",
+      company: data?.company || "",
+      total_price: data?.total_price || "",
+      cost_price: data?.cost_price || "",
+      quantity: data?.quantity || 0,
+      supplier: data?.supplier || "",
     },
   });
   const [activeFieldIndex, setActiveFieldIndex] = useState(0);
   const onSubmit = async (data) => {
-    if (product) {
+    if (data) {
       // Update existing product with data
       console.log("Updating product:", data);
       form.reset();
     } else {
       console.log("Creating product:", data);
+      try {
+        (async () => {
+          const response = await axios
+            .post(createProductUrl, { ...data, type: data.type })
+            .then(() => console.log("Product Created Successfully"));
+        })();
+      } catch (error) {
+        console.log("Error in creating Product " + error);
+      }
       form.reset();
     }
   };
@@ -84,7 +95,7 @@ function AddProductDialog({ product, addButton }) {
               {/* Product Name */}
               <FormField
                 control={form.control}
-                name="productName"
+                name="name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Product Name</FormLabel>
@@ -98,7 +109,7 @@ function AddProductDialog({ product, addButton }) {
               {/* Generic Name */}
               <FormField
                 control={form.control}
-                name="genericName"
+                name="generic_name"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Generic Name</FormLabel>
@@ -118,7 +129,7 @@ function AddProductDialog({ product, addButton }) {
                     <FormLabel>Type</FormLabel>
                     <Select
                       onValueChange={field.onChange}
-                      defaultValue={field.value}
+                      defaultValue={field.value || data?.type}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -141,7 +152,7 @@ function AddProductDialog({ product, addButton }) {
               {/* Batch Number */}
               <FormField
                 control={form.control}
-                name="batchNumber"
+                name="batch_number"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Batch Number</FormLabel>
@@ -159,7 +170,7 @@ function AddProductDialog({ product, addButton }) {
               {/* Expiry Date */}
               <FormField
                 control={form.control}
-                name="expiryDate"
+                name="expiry_date"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Expiry Date</FormLabel>
@@ -187,7 +198,7 @@ function AddProductDialog({ product, addButton }) {
               {/* Total Price */}
               <FormField
                 control={form.control}
-                name="totalPrice"
+                name="total_price"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Total Price</FormLabel>
@@ -205,7 +216,7 @@ function AddProductDialog({ product, addButton }) {
               {/* Cost Price */}
               <FormField
                 control={form.control}
-                name="costPrice"
+                name="cost_price"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Cost Price</FormLabel>

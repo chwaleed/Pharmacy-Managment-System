@@ -15,6 +15,7 @@ export const createProduct = async (request, response) => {
       quantity,
       supplier,
     } = request.body;
+    console.log(request.body);
 
     if (
       !name ||

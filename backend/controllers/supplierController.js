@@ -22,22 +22,14 @@ export const createSupplier = async (request, response) => {
   }
 };
 
-export const getSupplier = async (request, response) => {
+export const getSuppliers = async (req, res) => {
   try {
-    const { id } = request.body;
-    if (!id) {
-      return response.status(400).json({ message: "Supplier ID is required" });
-    }
-
-    const supplier = await Supplier.findById(id);
-
+    const supplier = await Supplier.find();
     if (!supplier) {
-      return response.status(404).json({ message: "Supplier not found" });
+      return response.status(404).json({ message: "No Suppplier Found" });
     }
-
-    return response.status(200).json({ data: supplier });
+    return res.status(200).json({ data: supplier });
   } catch (error) {
-    console.error(error);
-    response.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
