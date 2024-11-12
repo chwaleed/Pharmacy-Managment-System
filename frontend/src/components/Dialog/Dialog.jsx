@@ -47,12 +47,12 @@ function AddProductDialog({ product, addButton }) {
     if (product) {
       // Update existing product with data
       console.log("Updating product:", data);
+      form.reset();
     } else {
-      // Create new product with data
       console.log("Creating product:", data);
+      form.reset();
     }
   };
-  console.log(addButton);
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
