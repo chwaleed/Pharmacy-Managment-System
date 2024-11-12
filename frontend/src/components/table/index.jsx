@@ -16,7 +16,7 @@ function TableCom({ data, head, relation }) {
   const renderRow = (item) => {
     switch (relation) {
       case "products":
-        return renderInvoiceRow(item);
+        return renderProductRow(item);
       case "supplier":
         return renderSupplier(item);
       case "customer":
@@ -57,14 +57,14 @@ function TableCom({ data, head, relation }) {
     </div>
   );
 }
-const renderInvoiceRow = (invoice) => (
+const renderProductRow = (product) => (
   <>
-    <TableCell className="font-medium">{invoice.productName}</TableCell>
-    <TableCell className="font-medium">{invoice.paymentStatus}</TableCell>
-    <TableCell className="font-medium">{invoice.totalAmount}</TableCell>
-    <TableCell className="font-medium">{invoice.totalAmoun || null}</TableCell>
-    <TableCell className="font-medium">{invoice.totalAmoun || null}</TableCell>
-    <TableCell className="font-medium">{invoice.paymentMethod}</TableCell>
+    <TableCell className="font-medium">{product.name}</TableCell>
+    <TableCell className="font-medium">{product.batch_number}</TableCell>
+    <TableCell className="font-medium">{product.supplier}</TableCell>
+    <TableCell className="font-medium">{product.company || null}</TableCell>
+    <TableCell className="font-medium">{product.total_price || null}</TableCell>
+    <TableCell className="font-medium">{product.quantity}</TableCell>
   </>
 );
 const renderSupplier = (invoice) => (

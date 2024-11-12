@@ -125,7 +125,7 @@ function AddMedicine() {
     (async () => {
       try {
         const response = await axios.get(getAllProductsURL);
-        setProducts(response.data);
+        setProducts(response.data.data);
       } catch (error) {
         console.log("Error in fetching Data", error);
       }
@@ -133,7 +133,7 @@ function AddMedicine() {
   }, []);
 
   return (
-    <div className="w-screen h-screen bg-[#F9F9FA]  px-[5%] pt-[5%]">
+    <div className="w-screen h-screen bg-[#F9F9FA] relative  px-[5%] pt-[5%]">
       <div className="w-full  flex justify-between">
         <h1 className="text-[2rem]">Medicine</h1>
         <AddProductDialog addButton={AddMedicineButton} />
@@ -152,7 +152,14 @@ function AddMedicine() {
           Search: <Input className="text-[1.1rem]" type="text" />
         </span>
       </div>
-      <TableCom data={invoices} head={head} relation={"products"} />
+      {Products ? (
+        <TableCom data={Products} head={head} relation={"products"} />
+      ) : (
+        <h1 className="absolute top-[50%] left-[50%] translate-x-[-50%] text-gray-500 opacity-30 font-bold text-[4rem]">
+          {" "}
+          NO Product Found
+        </h1>
+      )}
       <div>
         <Pagination className="mt-5">
           <PaginationContent>

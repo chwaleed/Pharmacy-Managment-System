@@ -2,11 +2,13 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import express from "express";
 import routes from "./routes/routes.js";
+import cors from "cors";
 
 dotenv.config();
 const databaseUrl = process.env.DATABASE_URL;
 const port = 4001;
 const app = express();
+const origin = "http://localhost:5173";
 
 // Database Connection
 mongoose
@@ -16,6 +18,8 @@ mongoose
     console.log(err.message);
     process.exit();
   });
+
+app.use(cors({ origin: origin }));
 
 app.use(express.json());
 
