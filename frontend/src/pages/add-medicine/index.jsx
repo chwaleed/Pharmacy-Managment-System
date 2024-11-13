@@ -116,21 +116,9 @@ const head = [
 ];
 
 function AddMedicine() {
-  const getAllProductsURL = "http://localhost:4001/api/get-all-products";
   const onSubmit = async () => {};
   const [Products, setProducts] = useState();
   console.log(Products);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await axios.get(getAllProductsURL);
-        setProducts(response.data.data);
-      } catch (error) {
-        console.log("Error in fetching Data", error);
-      }
-    })();
-  }, []);
 
   return (
     <div className="w-screen h-screen bg-[#F9F9FA] relative  px-[5%] pt-[5%]">

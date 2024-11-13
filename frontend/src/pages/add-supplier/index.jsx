@@ -5,6 +5,7 @@ import TableCom from "@/components/table";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import AddSupplierDialog from "@/components/Dialog/SupplierDialog";
+import { useAppContext } from "@/context/Context";
 
 const suppliers = [
   {
@@ -20,21 +21,8 @@ const suppliers = [
 const head = ["Supplier Name", "Contact Name", "Address"];
 
 function AddSupplier() {
-  const getAllSuppliersURL = "http://localhost:4001/api/get-all-suppliers";
-  const onSubmit = async () => {};
-  const [Suppliers, setSuppliers] = useState();
-  console.log(Suppliers);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await axios.get(getAllSuppliersURL);
-        setSuppliers(response.data.data);
-      } catch (error) {
-        console.log("Error in fetching Data", error);
-      }
-    })();
-  }, []);
+  const { suppliers } = useAppContext();
+  console.log(suppliers);
 
   return (
     <div className="w-screen h-screen bg-[#F9F9FA] relative  px-[5%] pt-[5%]">
@@ -56,8 +44,8 @@ function AddSupplier() {
           Search: <Input className="text-[1.1rem]" type="text" />
         </span>
       </div>
-      {Suppliers ? (
-        <TableCom data={Suppliers} head={head} relation={"suppliers"} />
+      {suppliers ? (
+        <TableCom data={suppliers} head={head} relation={"suppliers"} />
       ) : (
         <h1 className="absolute top-[50%] left-[50%] translate-x-[-50%] text-gray-500 opacity-30 font-bold text-[4rem]">
           {" "}
