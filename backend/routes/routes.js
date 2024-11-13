@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   createSupplier,
+  deleteSupplier,
   getSuppliers,
 } from "../controllers/supplierController.js";
 import {
@@ -16,5 +17,6 @@ routes.get("/get-all-products", getAllProducts);
 routes.get("/get-product", getProduct);
 routes.post("/create-supplier", createSupplier);
 routes.get("/get-all-suppliers", getSuppliers);
+routes.delete("/delete-supplier", deleteSupplier);
 
 export default routes;

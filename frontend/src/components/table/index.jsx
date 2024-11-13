@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
 import {
@@ -17,7 +18,7 @@ import axios from "axios";
 
 function TableCom({ data, head, relation }) {
   /// Render row
-  const deleteSupplierRoute = "";
+  const deleteSupplierRoute = "http://localhost:4001/api/delete-supplier";
   const renderRow = (item) => {
     switch (relation) {
       case "products":
@@ -33,10 +34,18 @@ function TableCom({ data, head, relation }) {
 
   const handleDelete = async (data) => {
     console.log(data);
-    if (relation === "products") {
-      console.log("Product has been deleted");
-    } else if (relation === "suppliers") {
-      const response = await axios.delete(deleteSupplierRoute, data._id);
+    try {
+      if (relation === "products") {
+        console.log("Product has been deleted");
+      } else if (relation === "suppliers") {
+        const response = await axios.delete(deleteSupplierRoute, {
+          data: { _id: data._id },
+        });
+        location.reload();
+        console.log("Supplier Deleted Successfuly");
+      }
+    } catch (error) {
+      console.log("Error in Deleting Resources" + error);
     }
   };
 

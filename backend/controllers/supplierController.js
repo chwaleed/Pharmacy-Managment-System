@@ -34,4 +34,14 @@ export const getSuppliers = async (req, res) => {
   }
 };
 
-export const deleteSupplier = async (req) => {};
+export const deleteSupplier = async (req, res) => {
+  const { _id } = req.body;
+  console.log(req.body);
+  console.log(_id);
+  try {
+    const response = await Supplier.findByIdAndDelete(_id);
+    return res.status(200).json({ message: "Supplier has been deleted." });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
