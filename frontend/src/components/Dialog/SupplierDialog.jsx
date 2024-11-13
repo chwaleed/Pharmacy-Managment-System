@@ -33,7 +33,9 @@ function AddSupplierDialog({ data, addButton }) {
   });
   const [activeFieldIndex, setActiveFieldIndex] = useState(0);
   const onSubmit = async (data) => {
-    if (data) {
+    console.log(data);
+
+    if (data.id) {
       // Update existing supplier with data
       console.log("Updating supplier:", data);
       form.reset();
@@ -45,6 +47,7 @@ function AddSupplierDialog({ data, addButton }) {
             .post(createSupplierUrl, data)
             .then(() => console.log("Supplier Created Successfully"));
         })();
+        location.reload();
       } catch (error) {
         console.log("Error in creating Supplier " + error);
       }

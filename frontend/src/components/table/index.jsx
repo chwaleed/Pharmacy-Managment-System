@@ -13,9 +13,11 @@ import { X } from "lucide-react";
 import { Button } from "../ui/button";
 import AddProductDialog from "../Dialog/Dialog";
 import SupplierDialog from "../Dialog/SupplierDialog";
+import axios from "axios";
 
 function TableCom({ data, head, relation }) {
   /// Render row
+  const deleteSupplierRoute = "";
   const renderRow = (item) => {
     switch (relation) {
       case "products":
@@ -26,6 +28,15 @@ function TableCom({ data, head, relation }) {
         return renderCustomer(item);
       default:
         return null;
+    }
+  };
+
+  const handleDelete = async (data) => {
+    console.log(data);
+    if (relation === "products") {
+      console.log("Product has been deleted");
+    } else if (relation === "suppliers") {
+      const response = await axios.delete(deleteSupplierRoute, data._id);
     }
   };
 
@@ -63,7 +74,10 @@ function TableCom({ data, head, relation }) {
                   }
                   return null;
                 })()}
-                <Button className="bg-red-600 hover:bg-red-700">
+                <Button
+                  onClick={() => handleDelete(data)}
+                  className="bg-red-600 hover:bg-red-700"
+                >
                   <X />
                 </Button>
               </TableCell>

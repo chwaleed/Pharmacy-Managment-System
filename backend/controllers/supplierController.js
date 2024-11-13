@@ -33,3 +33,5 @@ export const getSuppliers = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+export const deleteSupplier = async (req) => {};
