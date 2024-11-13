@@ -27,9 +27,12 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { DialogClose } from "@radix-ui/react-dialog";
 import axios from "axios";
+import { useAppContext } from "@/context/Context";
 
 function AddProductDialog({ data, addButton }) {
   const createProductUrl = "http://localhost:4001/api/create-product";
+  const [activeFieldIndex, setActiveFieldIndex] = useState(0);
+  const { setProducts } = useAppContext();
   const form = useForm({
     defaultValues: {
       name: data?.name || "",
@@ -44,19 +47,18 @@ function AddProductDialog({ data, addButton }) {
       supplier: data?.supplier || "",
     },
   });
-  const [activeFieldIndex, setActiveFieldIndex] = useState(0);
   const onSubmit = async (data) => {
-    if (data) {
+    if (data.id) {
       // Update existing product with data
       console.log("Updating product:", data);
       form.reset();
     } else {
-      console.log("Creating product:", data);
       try {
         (async () => {
           const response = await axios
             .post(createProductUrl, { ...data, type: data.type })
-            .then(() => console.log("Product Created Successfully"));
+            .then((res) => setProducts((prev) => [...prev, res.data.data]));
+          console.log(response);
         })();
       } catch (error) {
         console.log("Error in creating Product " + error);

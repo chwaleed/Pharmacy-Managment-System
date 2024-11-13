@@ -21,9 +21,12 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { DialogClose } from "@radix-ui/react-dialog";
 import axios from "axios";
+import { useAppContext } from "@/context/Context";
 
 function AddSupplierDialog({ data, addButton }) {
   const createSupplierUrl = "http://localhost:4001/api/create-supplier";
+  const [activeFieldIndex, setActiveFieldIndex] = useState(0);
+  const { setSuppliers } = useAppContext();
   const form = useForm({
     defaultValues: {
       name: data?.name || "",
@@ -31,7 +34,6 @@ function AddSupplierDialog({ data, addButton }) {
       address: data?.address || "",
     },
   });
-  const [activeFieldIndex, setActiveFieldIndex] = useState(0);
   const onSubmit = async (data) => {
     console.log(data);
 
@@ -45,9 +47,8 @@ function AddSupplierDialog({ data, addButton }) {
         (async () => {
           const response = await axios
             .post(createSupplierUrl, data)
-            .then(() => console.log("Supplier Created Successfully"));
+            .then((res) => setSuppliers((prev) => [...prev, res.data.data]));
         })();
-        location.reload();
       } catch (error) {
         console.log("Error in creating Supplier " + error);
       }

@@ -24,6 +24,7 @@ import TableCom from "@/components/table";
 import AddProductDialog from "@/components/Dialog/Dialog";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useAppContext } from "@/context/Context";
 
 const invoices = [
   {
@@ -117,8 +118,7 @@ const head = [
 
 function AddMedicine() {
   const onSubmit = async () => {};
-  const [Products, setProducts] = useState();
-  console.log(Products);
+  const { products } = useAppContext();
 
   return (
     <div className="w-screen h-screen bg-[#F9F9FA] relative  px-[5%] pt-[5%]">
@@ -140,34 +140,14 @@ function AddMedicine() {
           Search: <Input className="text-[1.1rem]" type="text" />
         </span>
       </div>
-      {Products ? (
-        <TableCom data={Products} head={head} relation={"products"} />
+      {products ? (
+        <TableCom data={products} head={head} relation={"products"} />
       ) : (
         <h1 className="absolute top-[50%] left-[50%] translate-x-[-50%] text-gray-500 opacity-30 font-bold text-[4rem]">
           {" "}
           NO Product Found
         </h1>
       )}
-      <div>
-        <Pagination className="mt-5">
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious href="#" />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#" isActive={true}>
-                1
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">2</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext href="#" />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
     </div>
   );
 }
