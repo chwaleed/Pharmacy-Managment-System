@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { Button } from "@/components/ui/button";
 import {
@@ -43,12 +44,12 @@ import {
 } from "@/components/ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import SupplierSelect from "../Combobox";
 
 function AddProductDialog({ data, addButton }) {
   const createProductUrl = "http://localhost:4001/api/create-product";
   const [activeFieldIndex, setActiveFieldIndex] = useState(0);
   const { setProducts, suppliers } = useAppContext();
-  const [searchTerm, setSearchTerm] = useState("");
   const [open, setOpen] = useState(false);
 
   const form = useForm({
@@ -102,15 +103,12 @@ function AddProductDialog({ data, addButton }) {
     }
   };
 
-  // const suppliers = [
-  //   { value: "Supplier1", label: "Supplier 1" },
-  //   { value: "Supplier2", label: "Supplier 2" },
-  //   { value: "Supplier3", label: "Supplier 3" },
-  // ];
-
   const filteredSuppliers = suppliers.filter((supplier) =>
-    supplier.name.toLowerCase().includes(searchTerm.toLowerCase())
+    supplier.name
+      .toLowerCase()
+      .includes(form.watch("supplier")?.toLowerCase() || "")
   );
+
   console.log(filteredSuppliers);
   return (
     <Dialog className="w-[60vw]">
@@ -286,70 +284,14 @@ function AddProductDialog({ data, addButton }) {
                 control={form.control}
                 name="supplier"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Supplier</FormLabel>
-                    <FormControl>
-                      <Popover open={open} onOpenChange={setOpen}>
-                        <PopoverTrigger asChild>
-                          <Button
-                            variant="outline"
-                            role="combobox"
-                            aria-expanded={open}
-                            className="w-[200px] justify-between"
-                          >
-                            {field.value
-                              ? suppliers.find(
-                                  (supplier) => supplier._id === field.value
-                                )?.name
-                              : "Select supplier..."}
-                            <ChevronsUpDown className="opacity-50" />
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-[200px] p-0">
-                          <Command>
-                            <Input
-                              placeholder="Search supplier..."
-                              value={searchTerm}
-                              onChange={(e) => setSearchTerm(e.target.value)}
-                              onFocus={(e) => e.target.select()}
-                            />
-                            <CommandList>
-                              <CommandEmpty>No suppliers found.</CommandEmpty>
-                              <CommandGroup>
-                                {filteredSuppliers.length > 0 ? (
-                                  filteredSuppliers.map((supplier) => (
-                                    <CommandItem
-                                      key={supplier._id}
-                                      onSelect={() => {
-                                        field.onChange(supplier._id);
-                                        setSearchTerm("");
-                                        setOpen(false);
-                                      }}
-                                    >
-                                      {supplier.name}
-                                      <Check
-                                        className={cn(
-                                          "ml-auto",
-                                          field.value === supplier._id
-                                            ? "opacity-100"
-                                            : "opacity-0"
-                                        )}
-                                      />
-                                    </CommandItem>
-                                  ))
-                                ) : (
-                                  <CommandEmpty>
-                                    No suppliers found.
-                                  </CommandEmpty>
-                                )}
-                              </CommandGroup>
-                            </CommandList>
-                          </Command>
-                        </PopoverContent>
-                      </Popover>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                  <SupplierSelect
+                    control={form.control}
+                    name="supplier"
+                    suppliers={suppliers}
+                    filteredSuppliers={filteredSuppliers}
+                    open={open}
+                    setOpen={setOpen}
+                  />
                 )}
               />
             </div>
@@ -366,3 +308,64 @@ function AddProductDialog({ data, addButton }) {
 }
 
 export default AddProductDialog;
+
+{
+  /* <FormItem>
+<FormLabel>Supplier</FormLabel>
+<FormControl>
+  <Popover open={open} onOpenChange={setOpen}>
+    <PopoverTrigger asChild>
+      <Button
+        variant="outline"
+        role="combobox"
+        aria-expanded={open}
+        className="w-[200px] justify-between"
+      >
+        {field.value
+          ? suppliers.find(
+              (supplier) => supplier._id === field.value
+            )?.name
+          : "Select supplier..."}
+        <ChevronsUpDown className="opacity-50" />
+      </Button>
+    </PopoverTrigger>
+    <PopoverContent className="w-[200px] p-0">
+      <Command>
+        <CommandInput placeholder="Search supplier..." />
+        <CommandList>
+          <CommandEmpty>No suppliers found.</CommandEmpty>
+          <CommandGroup>
+            {filteredSuppliers.length > 0 ? (
+              filteredSuppliers.map((supplier) => (
+                <CommandItem
+                  key={supplier._id}
+                  onSelect={() => {
+                    field.onChange(supplier._id);
+                    setOpen(false);
+                  }}
+                >
+                  {supplier.name}
+                  <Check
+                    className={cn(
+                      "ml-auto",
+                      field.value === supplier._id
+                        ? "opacity-100"
+                        : "opacity-0"
+                    )}
+                  />
+                </CommandItem>
+              ))
+            ) : (
+              <CommandEmpty>
+                No suppliers found.
+              </CommandEmpty>
+            )}
+          </CommandGroup>
+        </CommandList>
+      </Command>
+    </PopoverContent>
+  </Popover>
+</FormControl>
+<FormMessage />
+</FormItem> */
+}
