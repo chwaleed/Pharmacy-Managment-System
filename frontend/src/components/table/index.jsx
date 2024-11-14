@@ -15,10 +15,12 @@ import { Button } from "../ui/button";
 import AddProductDialog from "../Dialog/Dialog";
 import SupplierDialog from "../Dialog/SupplierDialog";
 import axios from "axios";
+import { useAppContext } from "@/context/Context";
 
 function TableCom({ data, head, relation }) {
-  /// Render row
   const deleteSupplierRoute = "http://localhost:4001/api/delete-supplier";
+  const deleteProductRoute = "http://localhost:4001/api/delete-product";
+  const { setProducts, setSuppliers } = useAppContext();
   const renderRow = (item) => {
     switch (relation) {
       case "products":
@@ -33,16 +35,23 @@ function TableCom({ data, head, relation }) {
   };
 
   const handleDelete = async (data) => {
-    console.log(data);
     try {
       if (relation === "products") {
-        console.log("Product has been deleted");
+        console.log("Trying to delet");
+        const response = await axios.delete(deleteProductRoute, {
+          data: { _id: data._id },
+        });
+
+        setProducts((prev) =>
+          prev.filter((product) => product._id !== data._id)
+        );
       } else if (relation === "suppliers") {
         const response = await axios.delete(deleteSupplierRoute, {
           data: { _id: data._id },
         });
-        location.reload();
-        console.log("Supplier Deleted Successfuly");
+        setSuppliers((prev) =>
+          prev.filter((supplier) => supplier._id !== data._id)
+        );
       }
     } catch (error) {
       console.log("Error in Deleting Resources" + error);
@@ -104,7 +113,6 @@ const renderProductRow = (product) => (
       {product.batch_number || "N/A"}
     </TableCell>
     <TableCell className="font-medium">
-      {" "}
       {product.supplier?.name || "N/A"}
     </TableCell>
     <TableCell className="font-medium">{product.company || "N/A"}</TableCell>

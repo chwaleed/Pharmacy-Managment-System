@@ -94,6 +94,7 @@ export const getAllProducts = async (req, res) => {
 
 export const deleteProduct = async (req, res) => {
   try {
+    console.log("Request comming");
     const { _id } = req.body;
     const response = await Product.findByIdAndDelete(_id);
     return res.status(200).json({ message: "Product has been deleted." });
