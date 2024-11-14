@@ -46,9 +46,16 @@ export const createProduct = async (request, response) => {
       quantity,
       supplier: supplierObjectId,
     });
-    return response
-      .status(201)
-      .json({ data: product, message: "Product Created Successfully" });
+
+    const populatedProduct = await Product.findById(product._id).populate(
+      "supplier",
+      "name"
+    );
+
+    return response.status(201).json({
+      data: populatedProduct,
+      message: "Product Created Successfully",
+    });
   } catch (error) {
     response.status(500).json({ error: "Internal Server Error" });
   }
@@ -80,6 +87,16 @@ export const getAllProducts = async (req, res) => {
       return res.status(404).json({ message: "No Product found." });
     }
     return res.status(200).json({ data: products });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export const deleteProduct = async (req, res) => {
+  try {
+    const { _id } = req.body;
+    const response = await Product.findByIdAndDelete(_id);
+    return res.status(200).json({ message: "Product has been deleted." });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
