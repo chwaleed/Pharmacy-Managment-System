@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import { FormItem, FormLabel, FormControl, FormMessage } from "../ui/form";
 import {
   Popover,
@@ -13,8 +15,8 @@ import {
   CommandGroup,
   CommandItem,
 } from "../ui/command";
-import { Check } from "lucide-react";
-import { cn } from "../utils/classnames";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const SupplierSelect = ({
   control,
@@ -23,6 +25,7 @@ const SupplierSelect = ({
   filteredSuppliers,
   open,
   setOpen,
+  field,
 }) => {
   return (
     <FormItem>
@@ -38,7 +41,7 @@ const SupplierSelect = ({
             >
               {field.value
                 ? suppliers.find((supplier) => supplier._id === field.value)
-                    ?.name
+                    ?.name || "Select supplier..."
                 : "Select supplier..."}
               <ChevronsUpDown className="opacity-50" />
             </Button>

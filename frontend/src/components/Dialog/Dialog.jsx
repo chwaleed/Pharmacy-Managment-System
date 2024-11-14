@@ -29,21 +29,6 @@ import { useState } from "react";
 import { DialogClose } from "@radix-ui/react-dialog";
 import axios from "axios";
 import { useAppContext } from "@/context/Context";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { cn } from "@/lib/utils";
 import SupplierSelect from "../Combobox";
 
 function AddProductDialog({ data, addButton }) {
@@ -103,13 +88,13 @@ function AddProductDialog({ data, addButton }) {
     }
   };
 
-  const filteredSuppliers = suppliers.filter((supplier) =>
-    supplier.name
-      .toLowerCase()
-      .includes(form.watch("supplier")?.toLowerCase() || "")
-  );
+  const filteredSuppliers = suppliers.filter((supplier) => {
+    const supplierName = form.watch("supplier");
+    const supplierNameStr =
+      typeof supplierName === "string" ? supplierName : "";
+    return supplier.name.toLowerCase().includes(supplierNameStr.toLowerCase());
+  });
 
-  console.log(filteredSuppliers);
   return (
     <Dialog className="w-[60vw]">
       <DialogTrigger asChild>{addButton}</DialogTrigger>
@@ -291,6 +276,7 @@ function AddProductDialog({ data, addButton }) {
                     filteredSuppliers={filteredSuppliers}
                     open={open}
                     setOpen={setOpen}
+                    field={field}
                   />
                 )}
               />

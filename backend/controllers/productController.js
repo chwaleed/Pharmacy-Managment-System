@@ -15,7 +15,6 @@ export const createProduct = async (request, response) => {
       quantity,
       supplier,
     } = request.body;
-    console.log(request.body);
 
     if (
       !name ||
@@ -51,7 +50,6 @@ export const createProduct = async (request, response) => {
       .status(201)
       .json({ data: product, message: "Product Created Successfully" });
   } catch (error) {
-    console.error(error);
     response.status(500).json({ error: "Internal Server Error" });
   }
 };
@@ -71,20 +69,18 @@ export const getProduct = async (request, response) => {
 
     return response.status(200).json({ data: product });
   } catch (error) {
-    console.error(error);
     response.status(500).json({ error: "Internal Server Error" });
   }
 };
 
 export const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find().populate("supplier");
+    const products = await Product.find().populate("supplier", "name");
     if (!products) {
       return res.status(404).json({ message: "No Product found." });
     }
     return res.status(200).json({ data: products });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };

@@ -99,12 +99,19 @@ function TableCom({ data, head, relation }) {
 }
 const renderProductRow = (product) => (
   <>
-    <TableCell className="font-medium">{product.name}</TableCell>
-    <TableCell className="font-medium">{product.batch_number}</TableCell>
-    <TableCell className="font-medium">{product.supplier}</TableCell>
-    <TableCell className="font-medium">{product.company || null}</TableCell>
-    <TableCell className="font-medium">{product.total_price || null}</TableCell>
-    <TableCell className="font-medium">{product.quantity}</TableCell>
+    <TableCell className="font-medium">{product.name || "N/A"}</TableCell>
+    <TableCell className="font-medium">
+      {product.batch_number || "N/A"}
+    </TableCell>
+    <TableCell className="font-medium">
+      {" "}
+      {product.supplier?.name || "N/A"}
+    </TableCell>
+    <TableCell className="font-medium">{product.company || "N/A"}</TableCell>
+    <TableCell className="font-medium">
+      {product.total_price || "N/A"}
+    </TableCell>
+    <TableCell className="font-medium">{product.quantity || 0}</TableCell>
   </>
 );
 
