@@ -28,11 +28,29 @@ import { useState } from "react";
 import { DialogClose } from "@radix-ui/react-dialog";
 import axios from "axios";
 import { useAppContext } from "@/context/Context";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 function AddProductDialog({ data, addButton }) {
   const createProductUrl = "http://localhost:4001/api/create-product";
   const [activeFieldIndex, setActiveFieldIndex] = useState(0);
-  const { setProducts } = useAppContext();
+  const { setProducts, suppliers } = useAppContext();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [open, setOpen] = useState(false);
+
   const form = useForm({
     defaultValues: {
       name: data?.name || "",
@@ -47,6 +65,7 @@ function AddProductDialog({ data, addButton }) {
       supplier: data?.supplier || "",
     },
   });
+  console.log(suppliers);
   const onSubmit = async (data) => {
     if (data.id) {
       // Update existing product with data
@@ -56,7 +75,11 @@ function AddProductDialog({ data, addButton }) {
       try {
         (async () => {
           const response = await axios
-            .post(createProductUrl, { ...data, type: data.type })
+            .post(createProductUrl, {
+              ...data,
+              type: data.type,
+              supplier: data.supplier,
+            })
             .then((res) => setProducts((prev) => [...prev, res.data.data]));
           console.log(response);
         })();
@@ -78,6 +101,17 @@ function AddProductDialog({ data, addButton }) {
       setActiveFieldIndex(nextIndex);
     }
   };
+
+  // const suppliers = [
+  //   { value: "Supplier1", label: "Supplier 1" },
+  //   { value: "Supplier2", label: "Supplier 2" },
+  //   { value: "Supplier3", label: "Supplier 3" },
+  // ];
+
+  const filteredSuppliers = suppliers.filter((supplier) =>
+    supplier.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  console.log(filteredSuppliers);
   return (
     <Dialog className="w-[60vw]">
       <DialogTrigger asChild>{addButton}</DialogTrigger>
@@ -255,7 +289,64 @@ function AddProductDialog({ data, addButton }) {
                   <FormItem>
                     <FormLabel>Supplier</FormLabel>
                     <FormControl>
-                      <Input placeholder="Supplier" {...field} />
+                      <Popover open={open} onOpenChange={setOpen}>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            aria-expanded={open}
+                            className="w-[200px] justify-between"
+                          >
+                            {field.value
+                              ? suppliers.find(
+                                  (supplier) => supplier._id === field.value
+                                )?.name
+                              : "Select supplier..."}
+                            <ChevronsUpDown className="opacity-50" />
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-[200px] p-0">
+                          <Command>
+                            <Input
+                              placeholder="Search supplier..."
+                              value={searchTerm}
+                              onChange={(e) => setSearchTerm(e.target.value)}
+                              onFocus={(e) => e.target.select()}
+                            />
+                            <CommandList>
+                              <CommandEmpty>No suppliers found.</CommandEmpty>
+                              <CommandGroup>
+                                {filteredSuppliers.length > 0 ? (
+                                  filteredSuppliers.map((supplier) => (
+                                    <CommandItem
+                                      key={supplier._id}
+                                      onSelect={() => {
+                                        field.onChange(supplier._id);
+                                        setSearchTerm("");
+                                        setOpen(false);
+                                      }}
+                                    >
+                                      {supplier.name}
+                                      <Check
+                                        className={cn(
+                                          "ml-auto",
+                                          field.value === supplier._id
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                        )}
+                                      />
+                                    </CommandItem>
+                                  ))
+                                ) : (
+                                  <CommandEmpty>
+                                    No suppliers found.
+                                  </CommandEmpty>
+                                )}
+                              </CommandGroup>
+                            </CommandList>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
