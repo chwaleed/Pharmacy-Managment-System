@@ -18,15 +18,7 @@ import {
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const SupplierSelect = ({
-  control,
-  name,
-  suppliers,
-  open,
-  setOpen,
-  field,
-  data,
-}) => {
+const SupplierSelect = ({ suppliers, open, setOpen, field }) => {
   return (
     <FormItem>
       <FormLabel>Supplier</FormLabel>

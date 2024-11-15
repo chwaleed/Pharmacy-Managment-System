@@ -108,13 +108,6 @@ function AddProductDialog({ data, addButton }) {
     }
   };
 
-  // const filteredSuppliers = suppliers.filter((supplier) => {
-  //   const supplierName = form.watch("supplier");
-  //   const supplierNameStr =
-  //     typeof supplierName === "string" ? supplierName : "";
-  //   return supplier.name.toLowerCase().includes(supplierNameStr.toLowerCase());
-  // });
-
   return (
     <Dialog className="w-[60vw]">
       <DialogTrigger asChild>{addButton}</DialogTrigger>
@@ -290,13 +283,10 @@ function AddProductDialog({ data, addButton }) {
                 name="supplier"
                 render={({ field }) => (
                   <SupplierSelect
-                    control={form.control}
-                    name="supplier"
                     suppliers={suppliers}
                     open={open}
                     setOpen={setOpen}
                     field={field}
-                    data={data.supplier.name}
                   />
                 )}
               />
