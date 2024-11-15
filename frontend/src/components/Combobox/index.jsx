@@ -22,10 +22,10 @@ const SupplierSelect = ({
   control,
   name,
   suppliers,
-  filteredSuppliers,
   open,
   setOpen,
   field,
+  data,
 }) => {
   return (
     <FormItem>
@@ -42,7 +42,7 @@ const SupplierSelect = ({
               {field.value
                 ? suppliers.find((supplier) => supplier._id === field.value)
                     ?.name || "Select supplier..."
-                : "Select supplier..."}
+                : `Select supplier...`}
               <ChevronsUpDown className="opacity-50" />
             </Button>
           </PopoverTrigger>
@@ -52,29 +52,26 @@ const SupplierSelect = ({
               <CommandList>
                 <CommandEmpty>No suppliers found.</CommandEmpty>
                 <CommandGroup>
-                  {filteredSuppliers.length > 0 ? (
-                    filteredSuppliers.map((supplier) => (
-                      <CommandItem
-                        key={supplier._id}
-                        onSelect={() => {
-                          field.onChange(supplier._id);
-                          setOpen(false);
-                        }}
-                      >
-                        {supplier.name}
-                        <Check
-                          className={cn(
-                            "ml-auto",
-                            field.value === supplier._id
-                              ? "opacity-100"
-                              : "opacity-0"
-                          )}
-                        />
-                      </CommandItem>
-                    ))
-                  ) : (
-                    <CommandEmpty>No suppliers found.</CommandEmpty>
-                  )}
+                  {suppliers.map((supplier) => (
+                    <CommandItem
+                      key={supplier._id}
+                      onSelect={() => {
+                        field.onChange(supplier._id);
+                        setOpen(false);
+                      }}
+                    >
+                      {supplier.name}
+                      <Check
+                        className={cn(
+                          "ml-auto",
+                          field.value === supplier._id
+                            ? "opacity-100"
+                            : "opacity-0"
+                        )}
+                      />
+                    </CommandItem>
+                  ))}
+                  <CommandEmpty>No suppliers found.</CommandEmpty>
                 </CommandGroup>
               </CommandList>
             </Command>

@@ -33,12 +33,14 @@ import SupplierSelect from "../Combobox";
 
 function AddProductDialog({ data, addButton }) {
   const createProductUrl = "http://localhost:4001/api/create-product";
+  const updateProductUrl = "http://localhost:4001/api/update-product";
   const [activeFieldIndex, setActiveFieldIndex] = useState(0);
   const { setProducts, suppliers } = useAppContext();
   const [open, setOpen] = useState(false);
 
   const form = useForm({
     defaultValues: {
+      _id: data?._id || "",
       name: data?.name || "",
       generic_name: data?.generic_name || "",
       type: data?.type || "",
@@ -48,14 +50,32 @@ function AddProductDialog({ data, addButton }) {
       total_price: data?.total_price || "",
       cost_price: data?.cost_price || "",
       quantity: data?.quantity || 0,
-      supplier: data?.supplier || "",
+      supplier: data?.supplier.name || "",
     },
   });
-  console.log(suppliers);
+  // console.log(data);
   const onSubmit = async (data) => {
-    if (data.id) {
-      // Update existing product with data
-      console.log("Updating product:", data);
+    if (data._id) {
+      console.log("updating");
+      try {
+        (async () => {
+          const response = await axios.put(updateProductUrl, {
+            ...data,
+            type: data.type,
+            supplier: data.supplier,
+          });
+          console.log(response);
+          setProducts((prev) =>
+            prev.map((product) =>
+              product._id === response.data.data._id
+                ? response.data.data
+                : product
+            )
+          );
+        })();
+      } catch (error) {
+        console.log("Error in updating Proudct");
+      }
       form.reset();
     } else {
       try {
@@ -88,12 +108,12 @@ function AddProductDialog({ data, addButton }) {
     }
   };
 
-  const filteredSuppliers = suppliers.filter((supplier) => {
-    const supplierName = form.watch("supplier");
-    const supplierNameStr =
-      typeof supplierName === "string" ? supplierName : "";
-    return supplier.name.toLowerCase().includes(supplierNameStr.toLowerCase());
-  });
+  // const filteredSuppliers = suppliers.filter((supplier) => {
+  //   const supplierName = form.watch("supplier");
+  //   const supplierNameStr =
+  //     typeof supplierName === "string" ? supplierName : "";
+  //   return supplier.name.toLowerCase().includes(supplierNameStr.toLowerCase());
+  // });
 
   return (
     <Dialog className="w-[60vw]">
@@ -273,10 +293,10 @@ function AddProductDialog({ data, addButton }) {
                     control={form.control}
                     name="supplier"
                     suppliers={suppliers}
-                    filteredSuppliers={filteredSuppliers}
                     open={open}
                     setOpen={setOpen}
                     field={field}
+                    data={data.supplier.name}
                   />
                 )}
               />
@@ -294,64 +314,3 @@ function AddProductDialog({ data, addButton }) {
 }
 
 export default AddProductDialog;
-
-{
-  /* <FormItem>
-<FormLabel>Supplier</FormLabel>
-<FormControl>
-  <Popover open={open} onOpenChange={setOpen}>
-    <PopoverTrigger asChild>
-      <Button
-        variant="outline"
-        role="combobox"
-        aria-expanded={open}
-        className="w-[200px] justify-between"
-      >
-        {field.value
-          ? suppliers.find(
-              (supplier) => supplier._id === field.value
-            )?.name
-          : "Select supplier..."}
-        <ChevronsUpDown className="opacity-50" />
-      </Button>
-    </PopoverTrigger>
-    <PopoverContent className="w-[200px] p-0">
-      <Command>
-        <CommandInput placeholder="Search supplier..." />
-        <CommandList>
-          <CommandEmpty>No suppliers found.</CommandEmpty>
-          <CommandGroup>
-            {filteredSuppliers.length > 0 ? (
-              filteredSuppliers.map((supplier) => (
-                <CommandItem
-                  key={supplier._id}
-                  onSelect={() => {
-                    field.onChange(supplier._id);
-                    setOpen(false);
-                  }}
-                >
-                  {supplier.name}
-                  <Check
-                    className={cn(
-                      "ml-auto",
-                      field.value === supplier._id
-                        ? "opacity-100"
-                        : "opacity-0"
-                    )}
-                  />
-                </CommandItem>
-              ))
-            ) : (
-              <CommandEmpty>
-                No suppliers found.
-              </CommandEmpty>
-            )}
-          </CommandGroup>
-        </CommandList>
-      </Command>
-    </PopoverContent>
-  </Popover>
-</FormControl>
-<FormMessage />
-</FormItem> */
-}
