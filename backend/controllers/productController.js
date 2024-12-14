@@ -64,6 +64,7 @@ export const createProduct = async (request, response) => {
 export const getProduct = async (request, response) => {
   try {
     const { id } = request.body;
+
     if (!id) {
       return response.status(400).json({ message: "Product ID is required" });
     }
@@ -82,10 +83,12 @@ export const getProduct = async (request, response) => {
 
 export const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find().populate("supplier", "name");
+    const products = await Product.find().populate("supplier");
     if (!products) {
       return res.status(404).json({ message: "No Product found." });
     }
+
+    // console.log(products);
     return res.status(200).json({ data: products });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
@@ -117,6 +120,7 @@ export const updateProduct = async (request, response) => {
       supplier,
       _id,
     } = request.body;
+    // console.log(name);
 
     if (
       !name ||
@@ -126,17 +130,19 @@ export const updateProduct = async (request, response) => {
       quantity == null ||
       quantity === undefined ||
       quantity < 0 ||
-      !cost_price ||
-      !supplier
+      !cost_price
     ) {
       return response
         .status(400)
         .json({ message: "Complete Required Fields!" });
     }
-    console.log(supplier);
-    const supplierObjectId = new mongoose.Types.ObjectId(supplier);
+    // if (supplier) {
+    //   const supplierObjectId = new mongoose.Types.ObjectId(supplier);
+    // }
 
-    const updatedProduct = await Product.findByIdAndUpdate(
+    // console.log(name);
+
+    const updateFields = await Product.findByIdAndUpdate(
       _id,
       {
         $set: {
@@ -149,8 +155,20 @@ export const updateProduct = async (request, response) => {
           total_price,
           cost_price,
           quantity,
-          supplier: supplierObjectId,
         },
+      },
+      { new: true }
+    );
+
+    if (supplier) {
+      const supplierObjectId = new mongoose.Types.ObjectId(supplier);
+      updateFields.supplier = supplierObjectId; // Only set supplier if provided
+    }
+
+    const updatedProduct = await Product.findByIdAndUpdate(
+      _id,
+      {
+        $set: updateFields, // Use the updateFields object
       },
       { new: true }
     );
@@ -158,6 +176,7 @@ export const updateProduct = async (request, response) => {
     const populatedProduct = await Product.findById(
       updatedProduct._id
     ).populate("supplier", "name");
+
     return response.status(201).json({
       data: populatedProduct,
       message: "Product Created Successfully",

@@ -14,8 +14,8 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="add-medicine" element={<AddMedicine />} />
-          <Route path="add-supplier" element={<AddSupplier />} />
+          <Route path="medicine" element={<AddMedicine />} />
+          <Route path="supplier" element={<AddSupplier />} />
           <Route path="sales" element={<Sales />} />
           <Route path="customers" element={<Customers />} />
           <Route path="reports" element={<Reports />} />

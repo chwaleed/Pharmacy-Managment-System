@@ -9,11 +9,11 @@ function Navbar() {
     },
     {
       text: "Medicine",
-      link: "add-medicine",
+      link: "medicine",
     },
     {
       text: "Supplier",
-      link: "add-supplier",
+      link: "supplier",
     },
     {
       text: "Sales",

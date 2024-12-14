@@ -34,6 +34,28 @@ export const getSuppliers = async (req, res) => {
   }
 };
 
+export const updateSupplier = async (req, res) => {
+  try {
+    const { _id, name, phone_number, address } = req.body;
+
+    const supplier = await Supplier.findByIdAndUpdate(
+      _id,
+      {
+        $set: {
+          name,
+          phone_number,
+          address,
+        },
+      },
+      { new: true }
+    );
+
+    return res.status(200).json({ data: supplier });
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 export const deleteSupplier = async (req, res) => {
   try {
     const { _id } = req.body;

@@ -1,6 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/no-unescaped-entities */
-/* eslint-disable react/prop-types */
 import {
   Table,
   TableBody,
@@ -14,21 +11,26 @@ import { X } from "lucide-react";
 import { Button } from "../ui/button";
 import AddProductDialog from "../Dialog/Dialog";
 import SupplierDialog from "../Dialog/SupplierDialog";
+// import CustomerDialog from "../Dialog/CustomerDialog";
 import axios from "axios";
 import { useAppContext } from "@/context/Context";
+import AddCustomerDialog from "../Dialog/CustomerDialog";
 
 function TableCom({ data, head, relation }) {
   const deleteSupplierRoute = "http://localhost:4001/api/delete-supplier";
   const deleteProductRoute = "http://localhost:4001/api/delete-product";
-  const { setProducts, setSuppliers } = useAppContext();
+  const deleteCustomerRoute = "http://localhost:4001/api/delete-customer";
+
+  const { setProducts, setSuppliers, setCustomers } = useAppContext();
+
   const renderRow = (item) => {
     switch (relation) {
       case "products":
         return renderProductRow(item);
       case "suppliers":
-        return renderSupplier(item);
-      case "customer":
-        return renderCustomer(item);
+        return renderSupplierRow(item);
+      case "customers":
+        return renderCustomerRow(item);
       default:
         return null;
     }
@@ -37,36 +39,35 @@ function TableCom({ data, head, relation }) {
   const handleDelete = async (data) => {
     try {
       if (relation === "products") {
-        console.log("Trying to delet");
-        const response = await axios.delete(deleteProductRoute, {
-          data: { _id: data._id },
-        });
-
+        await axios.delete(deleteProductRoute, { data: { _id: data._id } });
         setProducts((prev) =>
           prev.filter((product) => product._id !== data._id)
         );
       } else if (relation === "suppliers") {
-        const response = await axios.delete(deleteSupplierRoute, {
-          data: { _id: data._id },
-        });
+        await axios.delete(deleteSupplierRoute, { data: { _id: data._id } });
         setSuppliers((prev) =>
           prev.filter((supplier) => supplier._id !== data._id)
         );
+      } else if (relation === "customers") {
+        await axios.delete(deleteCustomerRoute, { data: { _id: data._id } });
+        setCustomers((prev) =>
+          prev.filter((customer) => customer._id !== data._id)
+        );
       }
     } catch (error) {
-      console.log("Error in Deleting Resources" + error);
+      console.error("Error in Deleting Resources:", error);
     }
   };
 
   return (
-    <div className=" h-[39rem] mt-4 overflow-auto">
-      <Table className="">
+    <div className="h-[39rem] mt-4 overflow-auto">
+      <Table>
         <TableHeader>
           <TableRow>
             {head.map((item, index) => (
-              <TableHead key={`table_head_${index}`}>{head[index]}</TableHead>
+              <TableHead key={`table_head_${index}`}>{item}</TableHead>
             ))}
-            <TableHead className="text-center ">Action</TableHead>
+            <TableHead className="text-center">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -77,14 +78,25 @@ function TableCom({ data, head, relation }) {
                 {(() => {
                   if (relation === "products") {
                     return (
+                      // <AddProductDialog
+                      //   data={data}
+                      //   // addButton={editMedicineButton}
+                      // />
                       <AddProductDialog
-                        data={data}
                         addButton={editMedicineButton}
+                        data={data}
                       />
                     );
                   } else if (relation === "suppliers") {
                     return (
                       <SupplierDialog
+                        data={data}
+                        addButton={editMedicineButton}
+                      />
+                    );
+                  } else if (relation === "customers") {
+                    return (
+                      <AddCustomerDialog
                         data={data}
                         addButton={editMedicineButton}
                       />
@@ -106,40 +118,45 @@ function TableCom({ data, head, relation }) {
     </div>
   );
 }
+
 const renderProductRow = (product) => (
   <>
-    <TableCell className="font-medium">{product.name || "N/A"}</TableCell>
+    <TableCell className="font-medium">{product?.name || "N/A"}</TableCell>
     <TableCell className="font-medium">
-      {product.batch_number || "N/A"}
+      {product?.batch_number || "N/A"}
     </TableCell>
     <TableCell className="font-medium">
-      {product.supplier?.name || "N/A"}
+      {product?.supplier?.name || "N/A"}
     </TableCell>
     <TableCell className="font-medium">{product.company || "N/A"}</TableCell>
     <TableCell className="font-medium">
-      {product.total_price || "N/A"}
+      {product?.total_price || "N/A"}
     </TableCell>
-    <TableCell className="font-medium">{product.quantity || 0}</TableCell>
+    <TableCell className="font-medium">{product?.quantity || 0}</TableCell>
   </>
 );
 
-const renderSupplier = (supplier) => (
+const renderSupplierRow = (supplier) => (
   <>
-    <TableCell className="font-medium">{supplier.name}</TableCell>
-    <TableCell className="font-medium">{supplier.phone_number}</TableCell>
-    <TableCell className="font-medium">{supplier.address}</TableCell>
+    <TableCell className="font-medium">{supplier?.name || "N/A"}</TableCell>
+    <TableCell className="font-medium">
+      {supplier?.phone_number || "N/A"}
+    </TableCell>
+    <TableCell className="font-medium">{supplier?.address || "N/A"}</TableCell>
   </>
 );
-const renderCustomer = (invoice) => (
+
+const renderCustomerRow = (customer) => (
   <>
-    <TableCell className="font-medium">Customer</TableCell>
-    <TableCell className="font-medium">{invoice.paymentStatus}</TableCell>
-    <TableCell className="font-medium">{invoice.totalAmount}</TableCell>
-    <TableCell className="font-medium">{invoice.paymentMethod}</TableCell>
+    <TableCell className="font-medium">{customer?.name}</TableCell>
+    <TableCell className="font-medium">{customer?.phone_number}</TableCell>
+    <TableCell className="font-medium">{customer?.address}</TableCell>
+    <TableCell className="font-medium">Rs {customer?.credit || 0}</TableCell>
   </>
 );
 
 export default TableCom;
+
 const editMedicineButton = (
   <Button className="bg-blue-600 hover:bg-blue-700">
     <Edit />

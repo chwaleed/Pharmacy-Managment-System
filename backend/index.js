@@ -19,7 +19,7 @@ mongoose
     process.exit();
   });
 
-app.use(cors({ origin: origin }));
+app.use(cors({ origin: true }));
 
 app.use(express.json());
 

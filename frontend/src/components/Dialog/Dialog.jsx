@@ -50,7 +50,6 @@ function AddProductDialog({ data, addButton }) {
       total_price: data?.total_price || "",
       cost_price: data?.cost_price || "",
       quantity: data?.quantity || 0,
-      supplier: data?.supplier.name || "",
     },
   });
   // console.log(data);
@@ -59,17 +58,18 @@ function AddProductDialog({ data, addButton }) {
       console.log("updating");
       try {
         (async () => {
-          const response = await axios.put(updateProductUrl, {
-            ...data,
-            type: data.type,
-            supplier: data.supplier,
-          });
-          console.log(response);
-          setProducts((prev) =>
-            prev.map((product) =>
-              product._id === response.data.data._id
-                ? response.data.data
-                : product
+          await axios.put(
+            updateProductUrl,
+            {
+              ...data,
+              type: data.type,
+              supplier: data.supplier,
+            }.then((res) =>
+              setProducts((prev) =>
+                prev.map((product) =>
+                  product._id === res.data.data._id ? res.data.data : product
+                )
+              )
             )
           );
         })();

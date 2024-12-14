@@ -23,46 +23,43 @@ import { DialogClose } from "@radix-ui/react-dialog";
 import axios from "axios";
 import { useAppContext } from "@/context/Context";
 
-function AddSupplierDialog({ data, addButton }) {
-  const createSupplierUrl = "http://localhost:4001/api/create-supplier";
-  const updateSupplierUrl = "http://localhost:4001/api/update-supplier";
+function AddCustomerDialog({ data, addButton }) {
+  const createCustomerUrl = "http://localhost:4001/api/create-customer";
+  const updateCustomerUrl = "http://localhost:4001/api/update-customer";
   const [activeFieldIndex, setActiveFieldIndex] = useState(0);
-  const { setSuppliers } = useAppContext();
+  const { setCustomers } = useAppContext();
   const form = useForm({
     defaultValues: {
-      _id: data?._id || null,
+      _id: data?._id,
       name: data?.name || "",
       phone_number: data?.phone_number || "",
       address: data?.address || "",
+      credit: data?.credit || 0,
     },
   });
   const onSubmit = async (data) => {
     if (data._id) {
       try {
-        (async () => {
-          await axios
-            .post(updateSupplierUrl, data)
-            .then((res) =>
-              setSuppliers((prev) =>
-                prev.map((item) =>
-                  item._id === res.data.data._id ? res.data.data : item
-                )
-              )
-            );
-        })();
+        await axios.post(updateCustomerUrl, data).then((res) => {
+          setCustomers((prev) =>
+            prev.map((customer) =>
+              customer._id === res.data.data._id ? res?.data.data : customer
+            )
+          );
+        });
       } catch (error) {
-        console.log("Error in Updating Supplier " + error);
+        console.log("Error in updating Customer " + error);
       }
       form.reset();
     } else {
       try {
         (async () => {
           await axios
-            .post(createSupplierUrl, data)
-            .then((res) => setSuppliers((prev) => [...prev, res.data.data]));
+            .post(createCustomerUrl, data)
+            .then((res) => setCustomers((prev) => [...prev, res.data.data]));
         })();
       } catch (error) {
-        console.log("Error in creating Supplier " + error);
+        console.log("Error in creating Customer " + error);
       }
       form.reset();
     }
@@ -85,7 +82,7 @@ function AddSupplierDialog({ data, addButton }) {
       <DialogTrigger asChild>{addButton}</DialogTrigger>
       <DialogContent className="p-8">
         <DialogHeader>
-          <DialogTitle>Add Supplier</DialogTitle>
+          <DialogTitle>Add Customer</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
@@ -95,13 +92,13 @@ function AddSupplierDialog({ data, addButton }) {
             className="space-y-4"
           >
             <div className="grid grid-cols-1 gap-4">
-              {/* Supplier Name */}
+              {/* Customer Name */}
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Supplier Name</FormLabel>
+                    <FormLabel>Customer Name</FormLabel>
                     <FormControl>
                       <Input placeholder="Name" {...field} />
                     </FormControl>
@@ -137,10 +134,23 @@ function AddSupplierDialog({ data, addButton }) {
                   </FormItem>
                 )}
               />
+              <FormField
+                control={form.control}
+                name="credit"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Crdit</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Credit" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
             <DialogClose asChild>
               <div className="mt-6 flex justify-end">
-                <Button type="submit">Add Supplier</Button>
+                <Button type="submit">Add Customer</Button>
               </div>
             </DialogClose>
           </form>
@@ -150,4 +160,4 @@ function AddSupplierDialog({ data, addButton }) {
   );
 }
 
-export default AddSupplierDialog;
+export default AddCustomerDialog;
