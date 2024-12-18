@@ -120,7 +120,7 @@ export const updateProduct = async (request, response) => {
       supplier,
       _id,
     } = request.body;
-    // console.log(name);
+    console.log("here are the products");
 
     if (
       !name ||

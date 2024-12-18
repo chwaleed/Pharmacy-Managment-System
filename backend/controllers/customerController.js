@@ -62,7 +62,7 @@ export const updateCustomer = async (req, res) => {
 export const deleteCustomer = async (req, res) => {
   try {
     const { _id } = req.body;
-    const response = await Supplier.findByIdAndDelete(_id);
+    await Supplier.findByIdAndDelete(_id);
     return res.status(200).json({ message: "Customer has been deleted." });
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error" });

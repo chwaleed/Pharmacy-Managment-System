@@ -6,13 +6,16 @@ import {
   Zap,
   ChartNoAxesCombined,
 } from "lucide-react";
+import { useAppContext } from "@/context/Context";
 
 function Dashboard() {
+  const { totalProducts } = useAppContext();
+
   const boxes = [
     {
       primaryText: "Medicines",
       secondaryText: "Report",
-      value: 5,
+      value: totalProducts,
       icon: <BriefcaseBusiness size={33} strokeWidth={3} />,
       colorCode: "bg-[#32BC8B]",
     },
@@ -54,7 +57,7 @@ function Dashboard() {
   ];
 
   return (
-    <div className="grid grid-cols-3 text-white  w-full pl-[5%]  content-start pt-[10%] gap-12">
+    <div className="grid grid-cols-3 text-white w-full pl-[5%]  content-start pt-[10%] gap-12">
       {boxes.map((item, index) => (
         <div
           key={`boxes-${index}`}

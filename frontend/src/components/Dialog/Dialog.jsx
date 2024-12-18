@@ -55,40 +55,33 @@ function AddProductDialog({ data, addButton }) {
   // console.log(data);
   const onSubmit = async (data) => {
     if (data._id) {
-      console.log("updating");
       try {
-        (async () => {
-          await axios.put(
-            updateProductUrl,
-            {
-              ...data,
-              type: data.type,
-              supplier: data.supplier,
-            }.then((res) =>
-              setProducts((prev) =>
-                prev.map((product) =>
-                  product._id === res.data.data._id ? res.data.data : product
-                )
+        await axios
+          .patch(updateProductUrl, {
+            ...data,
+            type: data.type,
+            supplier: data.supplier,
+          })
+          .then((res) => {
+            setProducts((prev) =>
+              prev.map((product) =>
+                product._id === res.data.data._id ? res.data.data : product
               )
-            )
-          );
-        })();
+            );
+          });
       } catch (error) {
         console.log("Error in updating Proudct");
       }
       form.reset();
     } else {
       try {
-        (async () => {
-          const response = await axios
-            .post(createProductUrl, {
-              ...data,
-              type: data.type,
-              supplier: data.supplier,
-            })
-            .then((res) => setProducts((prev) => [...prev, res.data.data]));
-          console.log(response);
-        })();
+        await axios
+          .post(createProductUrl, {
+            ...data,
+            type: data.type,
+            supplier: data.supplier,
+          })
+          .then((res) => setProducts((prev) => [...prev, res.data.data]));
       } catch (error) {
         console.log("Error in creating Product " + error);
       }

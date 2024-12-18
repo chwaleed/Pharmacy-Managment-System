@@ -18,6 +18,7 @@ import {
   getCustomers,
   updateCustomer,
 } from "../controllers/customerController.js";
+import { stockReport } from "../controllers/dashboardController.js";
 
 const routes = Router();
 
@@ -25,7 +26,7 @@ routes.post("/create-product", createProduct);
 routes.get("/get-all-products", getAllProducts);
 routes.get("/get-product", getProduct);
 routes.delete("/delete-product", deleteProduct);
-routes.put("/update-product", updateProduct);
+routes.patch("/update-product", updateProduct);
 
 routes.post("/create-supplier", createSupplier);
 routes.get("/get-all-suppliers", getSuppliers);
@@ -37,4 +38,5 @@ routes.get("/get-all-customers", getCustomers);
 routes.post("/update-customer", updateCustomer);
 routes.delete("/delete-customer", deleteCustomer);
 
+routes.get("/stock-report", stockReport);
 export default routes;

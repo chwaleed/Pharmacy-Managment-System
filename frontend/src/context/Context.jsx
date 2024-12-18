@@ -7,6 +7,7 @@ const appContext = createContext();
 const getAllProductsURL = "http://localhost:4001/api/get-all-products";
 const getAllSuppliersURL = "http://localhost:4001/api/get-all-suppliers";
 const getAllCustomersURL = "http://localhost:4001/api/get-all-customers";
+const stockReport = "http://localhost:4001/api/stock-report";
 
 const getProducts = async (setProducts) => {
   try {
@@ -44,10 +45,20 @@ const serach = (text, data) => {
   );
 };
 
+const getStockReport = async (setShortStock) => {
+  try {
+    await axios.get(stockReport).then((res) => setShortStock(res.data.data));
+  } catch (error) {
+    console.log("Error in fetching Data", error);
+  }
+};
+
 export const ContextProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
   const [customers, setCustomers] = useState([]);
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [shortStock, setShortStock] = useState(0);
 
   // console.log(`product are `, products);
 
@@ -59,6 +70,14 @@ export const ContextProvider = ({ children }) => {
     ]);
   }, []);
 
+  useEffect(() => {
+    console.log("here are the products: ", products.length);
+    if (products.length > 0) {
+      setTotalProducts(products?.length);
+      getStockReport(setShortStock);
+    }
+  }, [products]);
+
   return (
     <appContext.Provider
       value={{
@@ -69,6 +88,7 @@ export const ContextProvider = ({ children }) => {
         customers,
         setCustomers,
         serach,
+        totalProducts,
       }}
     >
       {children}

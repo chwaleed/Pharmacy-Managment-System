@@ -28,9 +28,9 @@ function AddMedicine() {
   useEffect(() => {
     if (products) {
       if (text === "") {
-        setSearchedProducts(products); // Reset to all products when search text is empty
+        setSearchedProducts(products);
       } else {
-        setSearchedProducts(serach(text.trim(""), products)); // Filter based on the original products
+        setSearchedProducts(serach(text.trim(""), products));
       }
     }
   }, [products, serach, text]);
